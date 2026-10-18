@@ -1,32 +1,33 @@
 const express = require('express');
 const app = express();
 const PORTA = process.env.PORT || 3000;
-app.listen(PORTA, () => console.log(`🌐 Porta ${PORTA} aberta`)); 
+app.listen(PORTA, () => console.log(`✅ Porta ${PORTA} aberta`));
+
 require('dotenv').config();
 const { Client, GatewayIntentBits } = require('discord.js');
 
-const cliente = new Client({
+const client = new Client({
   intents: [GatewayIntentBits.Guilds]
 });
 
-cliente.once('ready', () => {
-  console.log(`✅ Bot online: ${cliente.user.tag}`);
+client.once('ready', () => {
+  console.log(`✅ Bot online: ${client.user.tag}`);
 });
 
-cliente.on('interactionCreate', async interacao => {
-  if (!interacao.isChatInputCommand()) return;
+client.on('interactionCreate', async interaction => {
+  if (!interaction.isChatInputCommand()) return;
 
-  if (interacao.commandName === 'ping') {
-    await interacao.reply('Pong! Estou funcionando.');
+  if (interaction.commandName === 'ping') {
+    await interaction.reply('Pong! Estou funcionando.');
   }
 
-  if (interacao.commandName === 'help') {
-    await interacao.reply(
+  if (interaction.commandName === 'ajuda') {
+    await interaction.reply(
       '**Comandos disponíveis:**\n' +
       '/ping — testa se o bot está online\n' +
-      '/help — mostra esta lista'
+      '/ajuda — mostra esta lista'
     );
   }
 });
 
-cliente.login(process.env.DISCORD_TOKEN);
+client.login(process.env.DISCORD_TOKEN);
